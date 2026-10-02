@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Salon Booking & Pricing — Hair Extension & Color Consultation</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><circle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23C8A24A%27/><text x=%2750%27 y=%2765%27 font-size=%2750%27 font-family=%27sans-serif%27 font-weight=%27bold%27 fill=%27%230D0D10%27 text-anchor=%27middle%27>✂</text></svg>">
+
+  <!-- Google Fonts: Poppins (Bold Headings/Numbers) & Open Sans (Body/Forms) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css?v=1790647100">
+</head>
+<body>
+
+  <!-- Top App Header -->
+  <header class="atelier-header">
+    <div class="header-container">
+
+      <!-- Stylist Profile / Brand -->
+      <div class="stylist-user-profile">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Stylist Avatar" class="user-avatar-img">
+        <div class="user-greeting">
+          <span class="greeting-sub">Welcome back</span>
+          <span class="greeting-name">Salon Apple</span>
+        </div>
+      </div>
+
+      <!-- Mode Category Pills (shortcut, also synced with Stage 1) -->
+      <nav class="mode-nav">
+        <button class="mode-tab" data-mode="extensions">Extensions</button>
+        <button class="mode-tab" data-mode="color">Color</button>
+        <button class="mode-tab active" data-mode="both">All (Both)</button>
+      </nav>
+
+      <!-- View & Reset Actions -->
+      <div class="header-actions">
+        <!-- Admin Panel Button -->
+        <button class="btn-admin-toggle" id="btn-open-admin" title="Admin Panel">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+          <span class="admin-btn-label">Admin</span>
+        </button>
+        <!-- Theme Switcher -->
+        <button class="btn-icon" id="theme-toggle-btn" title="Toggle Light/Dark Theme">
+          <svg id="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg id="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="view-toggle">
+          <button class="view-btn" data-view="client">Client</button>
+          <button class="view-btn active" data-view="stylist">Stylist</button>
+        </div>
+        <button class="btn-icon" id="btn-reset" title="Reset Consultation">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="atelier-main" id="atelier-main">
+
+    <!-- Flow Step Indicator (spans full grid width) -->
+    <div class="flow-indicator" id="flow-indicator"></div>
+
+    <!-- Left Column: Guided Consultation Stages (Accordion) -->
+    <div class="consultation-builder">
+
+      <!-- ═══════════════════════════════════════════════
+           STAGE 1: Client & Service Type
+           ═══════════════════════════════════════════════ -->
+      <div class="stage-item active" id="stage-item-1" data-stage="1">
+        <div class="stage-header" id="stage-header-1">
+          <div class="stage-header-left">
+            <div class="stage-dot current" id="stage-dot-1"><span>1</span></div>
+            <div class="stage-header-text">
+              <span class="stage-title">Client &amp; Service Type</span>
+              <span class="stage-summary" id="stage-summary-1"></span>
+            </div>
+          </div>
+          <button class="stage-edit-btn" id="stage-edit-1" style="display:none;" data-goto="1">Edit</button>
+        </div>
+        <div class="stage-body" id="stage-body-1">
+          <div class="client-details-grid">
+            <div class="form-group">
+              <label class="form-label" for="client-name-input">Client name</label>
+              <input class="select-control" id="client-name-input" type="text" autocomplete="name" placeholder="Optional">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="client-contact-input">Phone or email</label>
+              <input class="select-control" id="client-contact-input" type="text" autocomplete="email" placeholder="Optional">
+            </div>
+          </div>
+          <p class="stage-prompt">What are we planning today?</p>
+          <div class="service-type-grid" id="service-type-grid">
+            <button class="stc-card" data-mode="extensions">
+              <div class="stc-icon">✂</div>
+              <div class="stc-name">Extensions Only</div>
+              <div class="stc-desc">Method, hair catalog, and installation pricing.</div>
+            </button>
+            <button class="stc-card" data-mode="color">
+              <div class="stc-icon">◈</div>
+              <div class="stc-name">Color Only</div>
+              <div class="stc-desc">Color formulation, treatments, and styling services.</div>
+            </button>
+            <button class="stc-card active" data-mode="both">
+              <div class="stc-icon">✦</div>
+              <div class="stc-name">Extensions + Color</div>
+              <div class="stc-desc">Full consultation: extensions, color, and all add-ons.</div>
+            </button>
+          </div>
+          <div class="stage-nav">
+            <span></span>
+            <button class="btn-stage-next" data-next="2">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════
+           STAGE 2: Extension Details (skipped for color-only)
+           ═══════════════════════════════════════════════ -->
+      <div class="stage-item locked" id="stage-item-2" data-stage="2">
+        <div class="stage-header" id="stage-header-2">
+          <div class="stage-header-left">
+            <div class="stage-dot locked" id="stage-dot-2"><span>2</span></div>
+            <div class="stage-header-text">
+              <span class="stage-title">Extension Details</span>
+              <span class="stage-summary" id="stage-summary-2"></span>
+            </div>
+          </div>
+          <button class="stage-edit-btn" id="stage-edit-2" style="display:none;" data-goto="2">Edit</button>
+        </div>
+        <div class="stage-body" id="stage-body-2" style="display:none;">
+          <section id="section-extensions">
+            <!-- Multi-Method Extension Entries Container -->
+            <div id="extension-entries-container">
+              <!-- Dynamically populated via JS -->
+            </div>
+            <!-- Add Multiple Extension Method Button -->
+            <button type="button" class="btn-secondary-action add-method-btn" id="btn-add-method" style="margin-top: 0.5rem; width: 100%; border: 1.5px dashed var(--accent-yellow); color: var(--accent-yellow); background: rgba(200, 162, 74, 0.05); font-weight: 700; padding: 0.85rem; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add Multiple (Mix Another Method)
+            </button>
+          </section>
+          <div class="stage-nav">
+            <button class="btn-stage-prev" data-prev="1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back</button>
+            <button class="btn-stage-next" data-next="3">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════
+           STAGE 3: Stylist & Style Level
+           ═══════════════════════════════════════════════ -->
+      <div class="stage-item locked" id="stage-item-3" data-stage="3">
+        <div class="stage-header" id="stage-header-3">
+          <div class="stage-header-left">
+            <div class="stage-dot locked" id="stage-dot-3"><span>3</span></div>
+            <div class="stage-header-text">
+              <span class="stage-title">Stylist &amp; Style Level</span>
+              <span class="stage-summary" id="stage-summary-3"></span>
+            </div>
+          </div>
+          <button class="stage-edit-btn" id="stage-edit-3" style="display:none;" data-goto="3">Edit</button>
+        </div>
+        <div class="stage-body" id="stage-body-3" style="display:none;">
+          <section class="builder-section" id="section-stylist">
+
+            <!-- Extensionist Tier (hidden for color-only mode) -->
+            <div id="ext-tier-wrap">
+              <p class="tier-section-label">Extensionist Craft</p>
+              <div class="tier-slider-wrap">
+                <div class="tier-badge-row">
+                  <div class="tier-current-title" id="tier-title">Level 5: Lead Artisan</div>
+                  <span class="tier-exp-tag" id="tier-exp">4-5 Years Experience</span>
+                </div>
+                <input type="range" min="1" max="10" value="5" class="tier-slider" id="tier-slider">
+                <div class="tier-marks">
+                  <span>Level 1 (Emerging)</span>
+                  <span>Level 5 (Lead)</span>
+                  <span>Level 10 (Director)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Colorist Tier (hidden for extensions-only mode) -->
+            <div id="color-tier-wrap" style="margin-top:1rem;">
+              <p class="tier-section-label">Colorist Craft</p>
+              <div class="tier-slider-wrap color-tier-wrap">
+                <div class="tier-badge-row">
+                  <div class="tier-current-title" id="color-tier-title">Level 5: Lead Colorist</div>
+                  <span class="tier-exp-tag" id="color-tier-exp">Color Seniority Tier</span>
+                </div>
+                <input type="range" min="1" max="10" value="5" class="tier-slider" id="color-tier-slider">
+                <div class="tier-marks">
+                  <span>Level 1 (Emerging)</span>
+                  <span>Level 5 (Lead)</span>
+                  <span>Level 10 (Master Colorist)</span>
+                </div>
+              </div>
+            </div>
+
+          </section>
+          <div class="stage-nav">
+            <button class="btn-stage-prev" data-prev="2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back</button>
+            <button class="btn-stage-next" data-next="4">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════
+           STAGE 4: Color & Add-Ons
+           ═══════════════════════════════════════════════ -->
+      <div class="stage-item locked" id="stage-item-4" data-stage="4">
+        <div class="stage-header" id="stage-header-4">
+          <div class="stage-header-left">
+            <div class="stage-dot locked" id="stage-dot-4"><span>4</span></div>
+            <div class="stage-header-text">
+              <span class="stage-title">Color &amp; Add-Ons</span>
+              <span class="stage-summary" id="stage-summary-4"></span>
+            </div>
+          </div>
+          <button class="stage-edit-btn" id="stage-edit-4" style="display:none;" data-goto="4">Edit</button>
+        </div>
+        <div class="stage-body" id="stage-body-4" style="display:none;">
+
+          <!-- Color Harmony & Formulation -->
+          <section class="builder-section" id="section-color">
+
+            <!-- Color Application Type Toggle -->
+            <div class="form-group">
+              <label class="form-label">Color Application Type</label>
+              <div class="toggle-group" id="application-toggle-group">
+                <button type="button" class="toggle-btn active" data-val="root-to-tip">Root to Tip (Full Saturation)</button>
+                <button type="button" class="toggle-btn" data-val="touch-up">Touch-Up Only (Base Growth)</button>
+              </div>
+            </div>
+
+            <div class="two-col-grid">
+              <div class="form-group">
+                <label class="form-label" for="client-length-select">Client Hair Length</label>
+                <select id="client-length-select" class="select-control">
+                  <option value="short">Short (Above Shoulders / &lt;14")</option>
+                  <option value="medium">Medium (Collarbone to 16")</option>
+                  <option value="long" selected>Long (Past Mid-Back / 18"-22")</option>
+                  <option value="extralong">Extra Long (Past Waist / 24"+)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="client-density-select">Hair Thickness &amp; Complexity (1–10)</label>
+                <select id="client-density-select" class="select-control">
+                  <option value="1">1 - Fine / Low Density (Effortless)</option>
+                  <option value="2">2 - Fine / Standard Density</option>
+                  <option value="3">3 - Fine-Medium Density</option>
+                  <option value="4">4 - Medium / Standard Density</option>
+                  <option value="5" selected>5 - Medium-Thick (Standard +1 bowl)</option>
+                  <option value="6">6 - Thick / Moderate Resistance (+1 bowl)</option>
+                  <option value="7">7 - Thick / High Density (+1 bowl)</option>
+                  <option value="8">8 - Very Thick / Dense (+2 bowls)</option>
+                  <option value="9">9 - Ultra Thick &amp; Resistant (+2 bowls)</option>
+                  <option value="10">10 - Maximum Density &amp; Extreme Resistance (+2 bowls)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Dynamic Bowl Formula Callout -->
+            <div class="bowl-callout">
+              <span class="bowl-callout-icon">🥣</span>
+              <div class="bowl-callout-text" id="bowl-calc-desc">
+                No primary color service selected (0 base bowls).
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="color-service-select">Primary Lightening or Color Service</label>
+              <select id="color-service-select" class="select-control">
+                <option value="" selected>None (No Lightening / Color)</option>
+                <option value="balayage">Custom Balayage &amp; French Gloss</option>
+                <option value="platinum">Platinum Card / Global Lightening</option>
+                <option value="highlights">Full Dimensional Highlights</option>
+                <option value="all-over-color">All-Over Gloss / Demi-Permanent</option>
+              </select>
+            </div>
+
+            <!-- Dedicated Standalone Services -->
+            <div class="standalone-services-grid">
+              <div class="form-group">
+                <label class="form-label" for="keratin-service-select">Keratin Treatment</label>
+                <select id="keratin-service-select" class="select-control"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="haircut-service-select">Precision Haircut</label>
+                <select id="haircut-service-select" class="select-control"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="blowout-service-select">Blowout &amp; Finish</label>
+                <select id="blowout-service-select" class="select-control"></select>
+              </div>
+            </div>
+
+            <label class="form-label">Color Matching Add-Ons</label>
+            <div class="color-options-list" id="color-addons-list">
+              <!-- Populated via JS -->
+            </div>
+
+            <div class="treatment-header-row" style="margin-top:1rem;">
+              <label class="form-label" style="margin-bottom:0;">Luxury Bond &amp; Fiber Treatments</label>
+              <span class="treatment-counter-pill" id="treatment-counter">Up to 3 • 1 selected</span>
+            </div>
+            <div class="color-options-list" id="treatments-list">
+              <!-- Populated via JS -->
+            </div>
+
+          </section>
+
+          <!-- Curated Aftercare Kit -->
+          <section class="builder-section" id="section-aftercare" style="margin-top:1rem;">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <div>
+                  <h2 class="section-title">Luxury Take-Home Care</h2>
+                  <p class="section-subtitle">Preserve extension softness and prevent bond matting.</p>
+                </div>
+              </div>
+            </div>
+            <div class="products-cards-grid" id="aftercare-list">
+              <!-- Populated via JS -->
+            </div>
+          </section>
+
+          <div class="stage-nav">
+            <button class="btn-stage-prev" data-prev="3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back</button>
+            <button class="btn-stage-next" data-next="5">Review &amp; Pricing <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════
+           STAGE 5: Review & Pricing
+           ═══════════════════════════════════════════════ -->
+      <div class="stage-item locked" id="stage-item-5" data-stage="5">
+        <div class="stage-header" id="stage-header-5">
+          <div class="stage-header-left">
+            <div class="stage-dot locked" id="stage-dot-5"><span>5</span></div>
+            <div class="stage-header-text">
+              <span class="stage-title">Review &amp; Pricing</span>
+              <span class="stage-summary" id="stage-summary-5"></span>
+            </div>
+          </div>
+        </div>
+        <div class="stage-body" id="stage-body-5" style="display:none;">
+          <!-- Compact stage summaries -->
+          <div class="review-summaries" id="review-summaries"></div>
+          <!-- Mobile: inline ticket (JS mounts ticket card here on mobile stage 5) -->
+          <div id="mobile-stage5-ticket"></div>
+          <div class="stage-nav">
+            <button class="btn-stage-prev" data-prev="4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back</button>
+            <span></span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /consultation-builder -->
+
+    <!-- Right Column: Sticky Live Ticket (visible on Stage 5 only) -->
+    <aside class="ticket-sidebar" id="desktop-ticket-container" style="display:none;">
+      <div class="live-ticket-card" id="shared-ticket-card">
+
+        <div class="ticket-header">
+          <span class="ticket-badge">✦ Consultation Investment Ticket</span>
+          <span class="ticket-date" id="ticket-date">Sep 28, 2026</span>
+        </div>
+
+        <div class="hero-total-wrap">
+          <div class="total-label">Estimated Investment</div>
+          <div class="hero-total-price" id="hero-total-price">$2,197</div>
+          <div class="deposit-pill" id="deposit-amount">50% Deposit: $1,099</div>
+          <div class="financing-note" id="cherry-payment">or 4 interest-free payments of $549 with Cherry / Afterpay</div>
+        </div>
+
+        <div class="ticket-body">
+          <div class="breakdown-group" id="ticket-hair-row">
+            <span class="group-title">Hair Extension Investment</span>
+            <div class="breakdown-row">
+              <div>
+                <div class="row-item">Slavic / Remy Hair</div>
+                <div class="row-spec">Bellami Hand-Tied • 22" (2 pk • 130g)</div>
+              </div>
+              <div class="row-cost">$1,470</div>
+            </div>
+          </div>
+
+          <div class="breakdown-group" id="ticket-labor-row">
+            <span class="group-title">Installation Craft</span>
+            <div class="breakdown-row">
+              <div>
+                <div class="row-item">Application Service</div>
+                <div class="row-spec">Weft Extensions (New Installation) • Level 5 Lead Artisan</div>
+              </div>
+              <div class="row-cost">$420</div>
+            </div>
+          </div>
+
+          <div class="breakdown-group" id="ticket-color-row">
+            <span class="group-title">Color Harmony &amp; Formulation</span>
+            <div class="breakdown-row">
+              <div>
+                <div class="row-item">Color &amp; Treatments</div>
+                <div class="row-spec">Root Smudge, Toner - L'Oréal Gloss, K18 Peptide Molecular Repair</div>
+              </div>
+              <div class="row-cost">$187</div>
+            </div>
+          </div>
+
+          <div class="breakdown-group" id="ticket-styling-row" style="display:none;">
+            <span class="group-title">Keratin &amp; Precision Styling</span>
+            <div class="breakdown-row">
+              <div>
+                <div class="row-item">Smoothing &amp; Haircut</div>
+                <div class="row-spec">None</div>
+              </div>
+              <div class="row-cost">$0</div>
+            </div>
+          </div>
+
+          <div class="breakdown-group" id="ticket-aftercare-row">
+            <span class="group-title">Take-Home Longevity</span>
+            <div class="breakdown-row">
+              <div>
+                <div class="row-item">Aftercare Protocol</div>
+                <div class="row-spec">Atelier Signature Care Kit</div>
+              </div>
+              <div class="row-cost">$120</div>
+            </div>
+          </div>
+
+          <!-- Stylist Mode Back-of-House Profit Box -->
+          <div class="stylist-profit-card" id="stylist-profit-card">
+            <div class="profit-header">
+              <span class="profit-title">Salon Back-of-House Margin</span>
+              <span class="margin-pill" id="profit-margin-pill">63% Margin</span>
+            </div>
+            <div class="profit-details">
+              <div>
+                <span style="color:#9E9EA8;">Net Salon Profit:</span>
+                <div class="profit-metric-val" id="profit-dollar-val">$1,381</div>
+              </div>
+              <div>
+                <span style="color:#9E9EA8;">Wholesale Cost:</span>
+                <div class="profit-metric-val" style="color:#FFF;" id="wholesale-dollar-val">$816</div>
+              </div>
+              <div style="grid-column: span 2; margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(52, 211, 153, 0.2);">
+                <span style="color:#9E9EA8;">Estimated Chair Time:</span>
+                <span style="font-weight:700; color:#34D399; margin-left: 6px;" id="chair-time-val">~3.5 Hours</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ticket-actions">
+          <button class="btn-primary-action" id="btn-print-quote">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Generate Luxury Client Quote (PDF)
+          </button>
+          <button class="btn-secondary-action" id="btn-copy-quote">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Consultation Breakdown
+          </button>
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Mobile Floating Sticky Bottom Bar (visible on stages 1–4) -->
+  <div class="mobile-sticky-bar" id="mobile-sticky-bar">
+    <div class="bar-left-wrap">
+      <div class="bar-total-label">Total Investment</div>
+      <div class="bar-total-val" id="bar-total-val">$2,197</div>
+      <div class="bar-deposit-sub" id="bar-deposit-sub">50% Deposit: $1,099</div>
+    </div>
+    <button class="bar-action-btn" id="open-drawer-btn">
+      <span class="bar-btn-text">View Ticket</span>
+      <div class="bar-circle-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </div>
+    </button>
+  </div>
+
+  <!-- Mobile Slide-Up Bottom Drawer Sheet -->
+  <div class="mobile-drawer-overlay" id="mobile-drawer-overlay"></div>
+  <div class="mobile-drawer-content" id="mobile-drawer-content">
+    <div class="drawer-drag-pill"></div>
+    <div id="drawer-ticket-mount">
+      <!-- Shared ticket mounts here on mobile -->
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="atelier-toast" id="atelier-toast">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17L4 12"/></svg>
+    <span class="toast-msg">Notification message</span>
+  </div>
+
+  <!-- ============================================================
+       ADMIN PANEL (full-screen overlay, hidden by default)
+       ============================================================ -->
+  <div class="admin-panel-overlay" id="admin-panel-overlay" aria-hidden="true">
+
+    <!-- Admin Header -->
+    <header class="admin-header">
+      <button class="btn-back-to-calc" id="btn-close-admin">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Back to Calculator
+      </button>
+      <div class="admin-header-title">
+        <span class="admin-panel-label">Admin Panel</span>
+        <span class="admin-salon-name" id="admin-salon-name">Salon Apple</span>
+      </div>
+      <div class="admin-header-user" id="admin-header-user">fajardo80@gmail.com</div>
+    </header>
+
+    <!-- Admin Nav Tabs -->
+    <nav class="admin-nav" id="admin-nav">
+      <button class="admin-nav-tab active" data-admin-tab="team">Team</button>
+      <button class="admin-nav-tab" data-admin-tab="tickets">Tickets</button>
+      <button class="admin-nav-tab" data-admin-tab="service-pricing">Service Pricing</button>
+      <button class="admin-nav-tab" data-admin-tab="hair-pricing">Hair Pricing</button>
+      <button class="admin-nav-tab" data-admin-tab="styling-products">Styling Products</button>
+      <button class="admin-nav-tab" data-admin-tab="subscription">Subscription</button>
+      <button class="admin-nav-tab" data-admin-tab="scripts">Scripts</button>
+      <button class="admin-nav-tab" data-admin-tab="tutorials">Tutorials</button>
+      <button class="admin-nav-tab" data-admin-tab="settings">Settings</button>
+    </nav>
+
+    <!-- Admin Content Area -->
+    <div class="admin-content" id="admin-content">
+
+      <!-- TEAM TAB -->
+      <div class="admin-tab-pane active" id="admin-tab-team">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-section-title">Team</h2>
+            <p class="admin-section-sub">Manage stylists, colorists, and front desk staff.</p>
+          </div>
+          <button class="admin-btn-primary" id="btn-add-member">+ Add Team Member</button>
+        </div>
+
+        <!-- Add Member Form (hidden by default) -->
+        <div class="admin-form-card" id="add-member-form" style="display:none;">
+          <h4 class="admin-form-title">New Team Member</h4>
+          <div class="admin-form-grid">
+            <div class="admin-form-group">
+              <label class="admin-label">Full Name</label>
+              <input type="text" class="admin-input" placeholder="e.g. Maria Gonzalez">
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Role</label>
+              <select class="admin-select">
+                <option>Extensionist</option>
+                <option>Colorist</option>
+                <option>Extensionist + Colorist</option>
+                <option>Front Desk</option>
+                <option>Salon Manager</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Email</label>
+              <input type="email" class="admin-input" placeholder="email@salon.com">
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Stylist Level (1–10)</label>
+              <select class="admin-select" id="new-member-level">
+                <option>1</option><option>2</option><option>3</option><option>4</option>
+                <option selected>5</option><option>6</option><option>7</option><option>8</option>
+                <option>9</option><option>10</option>
+              </select>
+            </div>
+          </div>
+          <div class="admin-form-actions">
+            <button class="admin-btn-primary" id="btn-save-member">Send Invite</button>
+            <button class="admin-btn-ghost" id="btn-cancel-member">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Team Roster -->
+        <div class="admin-team-grid" id="team-roster-grid">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- TICKETS TAB -->
+      <div class="admin-tab-pane" id="admin-tab-tickets">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-section-title">Tickets</h2>
+            <p class="admin-section-sub">Recent consultation tickets and quote history.</p>
+          </div>
+          <button class="admin-btn-primary">+ New Ticket</button>
+        </div>
+        <div class="admin-empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted);margin-bottom:1rem;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <p class="admin-empty-title">No tickets yet</p>
+          <p class="admin-empty-sub">Use the calculator to build a consultation, then print or copy the quote. Saved tickets will appear here.</p>
+        </div>
+      </div>
+
+      <!-- SERVICE PRICING TAB -->
+      <div class="admin-tab-pane" id="admin-tab-service-pricing">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-section-title">Service Pricing</h2>
+            <p class="admin-section-sub">10-tier pricing grid for all services. Prices auto-apply to the calculator.</p>
+          </div>
+          <div style="display:flex;gap:0.5rem;">
+            <button class="admin-btn-ghost">Import from spreadsheet</button>
+            <button class="admin-btn-primary">Upload All</button>
+          </div>
+        </div>
+
+        <!-- Global toggles -->
+        <div class="admin-toggles-row">
+          <div class="admin-toggle-card">
+            <div>
+              <div class="admin-toggle-label">Additional bowls of color</div>
+              <div class="admin-toggle-desc">Automatically adds extra bowls based on application type, length, and thickness.</div>
+            </div>
+            <label class="admin-switch"><input type="checkbox" checked id="toggle-extra-bowls"><span class="admin-switch-slider"></span></label>
+          </div>
+          <div class="admin-toggle-card">
+            <div>
+              <div class="admin-toggle-label">Associate Pricing</div>
+              <div class="admin-toggle-desc">Sets all levels to 50% of Level 1 for junior/apprentice staff.</div>
+            </div>
+            <label class="admin-switch"><input type="checkbox" id="toggle-associate"><span class="admin-switch-slider"></span></label>
+          </div>
+          <div class="admin-toggle-card">
+            <div>
+              <div class="admin-toggle-label">Med spa services</div>
+              <div class="admin-toggle-desc">Adds a Med Spa tab to the calculator for injectables and wellness treatments.</div>
+            </div>
+            <label class="admin-switch"><input type="checkbox" id="toggle-medspa"><span class="admin-switch-slider"></span></label>
+          </div>
+        </div>
+
+        <!-- Service Category Cards -->
+        <div class="admin-service-cats" id="admin-service-cats">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- HAIR PRICING TAB -->
+      <div class="admin-tab-pane" id="admin-tab-hair-pricing">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-section-title">Hair Pricing</h2>
+            <p class="admin-section-sub">Manage hair product catalog and pricing (synced for all team members).</p>
+          </div>
+          <div style="display:flex;gap:0.5rem;align-items:center;">
+            <select class="admin-select" style="min-width:160px;" id="hair-method-filter">
+              <option value="">All Methods</option>
+              <option value="weft">Weft Extensions</option>
+              <option value="tape-in">Tape-In</option>
+              <option value="fusion">Fusion</option>
+              <option value="topper">Topper</option>
+            </select>
+            <button class="admin-btn-ghost">Export</button>
+            <button class="admin-btn-ghost">Import</button>
+            <button class="admin-btn-primary">+ Add Product</button>
+          </div>
+        </div>
+        <!-- Markup Tool -->
+        <div class="admin-markup-bar">
+          <span class="admin-markup-label">% Markup over wholesale cost:</span>
+          <select class="admin-select" id="markup-select" style="min-width:140px;">
+            <option value="">Set Markup Now</option>
+            <option value="1.5">50% markup (×1.5)</option>
+            <option value="2.0">100% markup (×2.0)</option>
+            <option value="2.5">150% markup (×2.5)</option>
+            <option value="3.0">200% markup (×3.0)</option>
+          </select>
+          <button class="admin-btn-primary" id="btn-apply-markup">Apply markup to all</button>
+          <span class="admin-markup-hint">Enter wholesale cost on at least one product first.</span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="hair-pricing-table">
+            <thead>
+              <tr>
+                <th>Method</th><th>Brand</th><th>Type</th><th>Length</th>
+                <th>Your Price</th><th>Wholesale</th><th>Grams</th><th>Pack Unit</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="hair-pricing-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- STYLING PRODUCTS TAB -->
+      <div class="admin-tab-pane" id="admin-tab-styling-products">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-section-title">Styling Products</h2>
+            <p class="admin-section-sub">Manage your salon's retail product catalog. These appear in the aftercare section.</p>
+          </div>
+          <div style="display:flex;gap:0.5rem;align-items:center;">
+            <input type="text" class="admin-input" placeholder="Search products…" id="styling-search" style="min-width:200px;">
+            <button class="admin-btn-ghost">Import</button>
+            <button class="admin-btn-primary">+ Add Product</button>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="styling-products-table">
+            <thead>
+              <tr>
+                <th>Supplier/Brand</th><th>Name</th><th>Description</th>
+                <th>Retail $</th><th>Wholesale $</th><th>Active</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="styling-products-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SUBSCRIPTION TAB -->
+      <div class="admin-tab-pane" id="admin-tab-subscription">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-section-title">Subscription</h2>
+            <p class="admin-section-sub">Manage your plan and billing.</p>
+          </div>
+        </div>
+        <div class="admin-sub-grid">
+          <div class="admin-sub-card current-plan">
+            <div class="admin-sub-badge">Current Plan</div>
+            <h3 class="admin-sub-plan-name">Atelier Pro</h3>
+            <div class="admin-sub-price">$49<span>/month</span></div>
+            <ul class="admin-sub-features">
+              <li>✓ Unlimited consultations</li>
+              <li>✓ Extensions + Color calculator</li>
+              <li>✓ 10-tier pricing grid</li>
+              <li>✓ PDF quote generation</li>
+              <li>✓ Mobile + desktop</li>
+              <li>✓ Dark / light mode</li>
+            </ul>
+            <button class="admin-btn-ghost" style="width:100%;margin-top:1rem;">Manage Billing</button>
+          </div>
+          <div class="admin-sub-card">
+            <div class="admin-sub-badge" style="background:rgba(52,211,153,0.15);color:#34D399;">Upgrade</div>
+            <h3 class="admin-sub-plan-name">Atelier Enterprise</h3>
+            <div class="admin-sub-price">$129<span>/month</span></div>
+            <ul class="admin-sub-features">
+              <li>✓ Everything in Pro</li>
+              <li>✓ Multi-location support</li>
+              <li>✓ Team management</li>
+              <li>✓ Mindbody / Fresha sync</li>
+              <li>✓ Priority support</li>
+              <li>✓ Custom branding</li>
+            </ul>
+            <button class="admin-btn-primary" style="width:100%;margin-top:1rem;">Upgrade Plan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCRIPTS TAB -->
+      <div class="admin-tab-pane" id="admin-tab-scripts">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-section-title">Consultation Scripts</h2>
+            <p class="admin-section-sub">Editable opening script shown at the top of the client-facing calculator.</p>
+          </div>
+        </div>
+        <div class="admin-form-card">
+          <label class="admin-label" for="script-welcome">Welcome / Opening Script</label>
+          <textarea class="admin-textarea" id="script-welcome" rows="6" placeholder="e.g. Welcome! Today we'll walk through your extension and color options together…"></textarea>
+          <div class="admin-form-actions" style="margin-top:1rem;">
+            <button class="admin-btn-primary" id="btn-save-script">Save Script</button>
+            <button class="admin-btn-ghost" id="btn-reset-script">Reset to Default</button>
+            <span class="admin-save-status" id="script-save-status"></span>
+          </div>
+        </div>
+        <div class="admin-form-card" style="margin-top:1rem;">
+          <label class="admin-label" for="script-extensions">Extensions Flow Prompt</label>
+          <textarea class="admin-textarea" id="script-extensions" rows="4" placeholder="Script for the extensions section of the consultation…"></textarea>
+          <div class="admin-form-actions" style="margin-top:1rem;">
+            <button class="admin-btn-primary" id="btn-save-ext-script">Save</button>
+            <span class="admin-save-status" id="ext-script-save-status"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TUTORIALS TAB -->
+      <div class="admin-tab-pane" id="admin-tab-tutorials">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-section-title">Tutorials</h2>
+            <p class="admin-section-sub">Training resources for your team.</p>
+          </div>
+        </div>
+        <div class="admin-tutorials-grid">
+          <div class="admin-tutorial-card">
+            <div class="admin-tutorial-icon">▶</div>
+            <div class="admin-tutorial-body">
+              <div class="admin-tutorial-tag">Getting Started</div>
+              <h4 class="admin-tutorial-title">Setting Up Your Pricing Grid</h4>
+              <p class="admin-tutorial-desc">How to configure your 10-tier service pricing and upload your hair catalog.</p>
+            </div>
+          </div>
+          <div class="admin-tutorial-card">
+            <div class="admin-tutorial-icon">▶</div>
+            <div class="admin-tutorial-body">
+              <div class="admin-tutorial-tag">Extensions</div>
+              <h4 class="admin-tutorial-title">Running an Extensions Consultation</h4>
+              <p class="admin-tutorial-desc">Step-by-step walkthrough of the extensions flow for stylists.</p>
+            </div>
+          </div>
+          <div class="admin-tutorial-card">
+            <div class="admin-tutorial-icon">▶</div>
+            <div class="admin-tutorial-body">
+              <div class="admin-tutorial-tag">Color</div>
+              <h4 class="admin-tutorial-title">Color Formulation &amp; Bowl Calculation</h4>
+              <p class="admin-tutorial-desc">Understanding the bowl logic, application types, and add-ons.</p>
+            </div>
+          </div>
+          <div class="admin-tutorial-card">
+            <div class="admin-tutorial-icon">▶</div>
+            <div class="admin-tutorial-body">
+              <div class="admin-tutorial-tag">PDF &amp; Quotes</div>
+              <h4 class="admin-tutorial-title">Generating and Sending Client Quotes</h4>
+              <p class="admin-tutorial-desc">How to print, copy, and share the Luxury Client Quote PDF.</p>
+            </div>
+          </div>
+          <div class="admin-tutorial-card">
+            <div class="admin-tutorial-icon">▶</div>
+            <div class="admin-tutorial-body">
+              <div class="admin-tutorial-tag">Admin</div>
+              <h4 class="admin-tutorial-title">Managing Your Team Roster</h4>
+              <p class="admin-tutorial-desc">Adding staff, assigning skill levels, and sending invite links.</p>
+            </div>
+          </div>
+          <div class="admin-tutorial-card">
+            <div class="admin-tutorial-icon">▶</div>
+            <div class="admin-tutorial-body">
+              <div class="admin-tutorial-tag">Aftercare</div>
+              <h4 class="admin-tutorial-title">Building Your Retail Product Catalog</h4>
+              <p class="admin-tutorial-desc">Adding aftercare products and styling items that appear in the upsell section.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div class="admin-tab-pane" id="admin-tab-settings">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-section-title">Settings</h2>
+            <p class="admin-section-sub">Integrations, branding, and app configuration.</p>
+          </div>
+        </div>
+
+        <!-- Salon Info -->
+        <div class="admin-settings-section">
+          <h4 class="admin-settings-group-title">Salon Information</h4>
+          <div class="admin-form-card">
+            <div class="admin-form-grid">
+              <div class="admin-form-group">
+                <label class="admin-label">Salon Name</label>
+                <input type="text" class="admin-input" id="setting-salon-name" value="Salon Apple">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Owner / Contact Name</label>
+                <input type="text" class="admin-input" placeholder="Your name">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Email</label>
+                <input type="email" class="admin-input" value="fajardo80@gmail.com">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Phone</label>
+                <input type="tel" class="admin-input" placeholder="+1 (555) 000-0000">
+              </div>
+            </div>
+            <div class="admin-form-actions" style="margin-top:1rem;">
+              <button class="admin-btn-primary" id="btn-save-salon-info">Save Changes</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Integrations -->
+        <div class="admin-settings-section">
+          <h4 class="admin-settings-group-title">Integrations</h4>
+          <div class="admin-integrations-grid">
+            <div class="admin-integration-card">
+              <div class="admin-integration-logo">MB</div>
+              <div class="admin-integration-info">
+                <div class="admin-integration-name">Mindbody</div>
+                <div class="admin-integration-status not-connected">Not connected</div>
+                <div class="admin-integration-desc">Sync clients, appointments, and tickets directly with your Mindbody account.</div>
+              </div>
+              <button class="admin-btn-ghost">Configure</button>
+            </div>
+            <div class="admin-integration-card">
+              <div class="admin-integration-logo" style="background:rgba(52,211,153,0.15);color:#34D399;">FR</div>
+              <div class="admin-integration-info">
+                <div class="admin-integration-name">Fresha</div>
+                <div class="admin-integration-status not-connected">Not connected</div>
+                <div class="admin-integration-desc">Connect to Fresha to push quotes and consultations to your booking system.</div>
+              </div>
+              <button class="admin-btn-ghost">Configure</button>
+            </div>
+            <div class="admin-integration-card">
+              <div class="admin-integration-logo" style="background:rgba(139,92,246,0.15);color:#8B5CF6;">CP</div>
+              <div class="admin-integration-info">
+                <div class="admin-integration-name">Cherry / Afterpay</div>
+                <div class="admin-integration-status not-connected">Not connected</div>
+                <div class="admin-integration-desc">Display financing options on client quotes with Cherry or Afterpay.</div>
+              </div>
+              <button class="admin-btn-ghost">Configure</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Deposit Settings -->
+        <div class="admin-settings-section">
+          <h4 class="admin-settings-group-title">Quote &amp; Deposit Settings</h4>
+          <div class="admin-form-card">
+            <div class="admin-form-grid">
+              <div class="admin-form-group">
+                <label class="admin-label">Deposit Percentage</label>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <input type="number" class="admin-input" id="setting-deposit-pct" value="50" min="0" max="100" style="max-width:100px;">
+                  <span style="color:var(--text-secondary);">%</span>
+                </div>
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Financing Installments</label>
+                <select class="admin-select" id="setting-installments">
+                  <option value="4" selected>4 payments (Afterpay/Cherry)</option>
+                  <option value="3">3 payments</option>
+                  <option value="6">6 payments</option>
+                  <option value="0">Hide financing</option>
+                </select>
+              </div>
+            </div>
+            <div class="admin-form-actions" style="margin-top:1rem;">
+              <button class="admin-btn-primary">Save Quote Settings</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-panel-overlay -->
+
+  <!-- Scripts -->
+  <script src="catalog-data.js"></script>
+  <script src="app.js?v=1790647100"></script>
+</body>
+</html>

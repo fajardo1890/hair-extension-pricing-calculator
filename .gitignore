@@ -1,0 +1,10 @@
+# Competitor reference material — StyleTicket is a third party's commercial
+# product. These screenshots were research only and must not be published.
+reference-screenshots/
+
+# Empty scratch folders left by AI coding tools
+.agents/
+.codex-artifacts/
+
+# macOS
+.DS_Store
